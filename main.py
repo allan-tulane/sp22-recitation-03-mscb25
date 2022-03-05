@@ -12,6 +12,8 @@ class BinaryNumber:
         
     def __repr__(self):
         return('decimal=%d binary=%s' % (self.decimal_val, ''.join(self.binary_vec)))
+
+   
     
 
 ## Implement multiplication functions here. Note that you will have to
@@ -44,9 +46,47 @@ def pad(x,y):
         y = ['0'] + y
     return x,y
 
+def _quadratic_multiply(x, y):
+  #BinaryNumber(x)
+  #BinaryNumber(y)
+  
+  if x.decimal_val <= 1 and y.decimal_val <=1:
+    return x.decimal_val * y.decimal_val
+
+  xvec = x.binary_vec
+  yvec = y.binary_vec
+  
+  pad(xvec, yvec)
+  
+  x_left, x_right = split_number(xvec)
+  
+  y_left, y_right = split_number(yvec)
+  
+  left_mult = _quadratic_multiply(x_left, y_left)
+
+  right_mult = _quadratic_multiply(x_right, y_right)
+
+  other_left_mult = _quadratic_multiply(x_left, y_right)
+
+  other_right_mult = _quadratic_multiply(x_right, y_left)
+
+  added_middle = other_left_mult.decimal_val + other_right_mult.decimal_val
+
+  real_middle = bit_shift(added_middle, len(xvec))
+  real_left = bit_shift(left_mult.decimal_val, len(xvec))
+
+
+  mult_num = BinaryNumber(real_left.decimal_val + real_middle.decimal_val + right_mult.decimal_val)
+  
+
+  return mult_num
+ 
+
+
+
 def quadratic_multiply(x, y):
     ### TODO
-    pass
+    return _quadratic_multiply(x,y).decimal_val
     ###
 
 
