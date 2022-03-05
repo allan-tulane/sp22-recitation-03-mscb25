@@ -51,7 +51,7 @@ def _quadratic_multiply(x, y):
   #BinaryNumber(y)
   
   if x.decimal_val <= 1 and y.decimal_val <=1:
-    return x.decimal_val * y.decimal_val
+    return BinaryNumber(x.decimal_val * y.decimal_val)
 
   xvec = x.binary_vec
   yvec = y.binary_vec
@@ -62,21 +62,23 @@ def _quadratic_multiply(x, y):
   
   y_left, y_right = split_number(yvec)
   
-  left_mult = _quadratic_multiply(x_left, y_left)
+  left_mult = quadratic_multiply(x_left, y_left)
 
-  right_mult = _quadratic_multiply(x_right, y_right)
+  right_mult = quadratic_multiply(x_right, y_right)
 
-  other_left_mult = _quadratic_multiply(x_left, y_right)
+  other_left_mult = quadratic_multiply(x_left, y_right)
 
-  other_right_mult = _quadratic_multiply(x_right, y_left)
+  other_right_mult = quadratic_multiply(x_right, y_left)
 
-  added_middle = other_left_mult.decimal_val + other_right_mult.decimal_val
-
+  added_middle = BinaryNumber(other_left_mult + other_right_mult)
+  
   real_middle = bit_shift(added_middle, len(xvec))
-  real_left = bit_shift(left_mult.decimal_val, len(xvec))
+  leftleft = BinaryNumber(left_mult)
+  real_left = bit_shift(leftleft, len(xvec))
+  rightright = BinaryNumber(right_mult)
 
 
-  mult_num = BinaryNumber(real_left.decimal_val + real_middle.decimal_val + right_mult.decimal_val)
+  mult_num = BinaryNumber(real_left.decimal_val + real_middle.decimal_val + rightright.decimal_val)
   
 
   return mult_num
@@ -102,6 +104,4 @@ def time_multiply(x, y, f):
     return (time.time() - start)*1000
 
 
-    
-    
 
